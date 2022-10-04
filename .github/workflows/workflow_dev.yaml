@@ -23,12 +23,12 @@ jobs:
           sudo apt-get install -y wireshark libxml2-dev
 
       - name: Create build folder
-        working-directory: jaustoolset/wiresharkPlugin/src/Wireshark-3.2.x
+        working-directory: wiresharkPlugin/src/Wireshark-3.2.x
         shell: bash
         run: mkdir build
 
       - name: Build plugin
-        working-directory: jaustoolset/wiresharkPlugin/src/Wireshark-3.2.x/build
+        working-directory: wiresharkPlugin/src/Wireshark-3.2.x/build
         shell: bash
         run: |
           cmake ..
