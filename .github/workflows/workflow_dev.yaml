@@ -20,7 +20,7 @@ jobs:
         shell: bash
         run: |
           sudo add-apt-repository universe
-          sudo apt-get install -y wireshark libxml2-dev
+          sudo apt-get install -y wireshark-dev libxml2-dev
 
       - name: Create build folder
         working-directory: wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x
