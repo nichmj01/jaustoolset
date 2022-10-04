@@ -1,0 +1,35 @@
+name: workflow_dev
+
+on:
+  workflow_call:
+
+  push:
+    branches: [
+      workflow_dev
+    ]
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        shell: bash
+        run: |
+          sudo add-apt-repository universe
+          sudo apt install -y wireshark libxml-dev
+
+      - name: Create build folder
+        working-directory: jaustoolset/wiresharkPlugin/src/Wireshark-3.2.x
+        shell: bash
+        run: mkdir build
+
+      - name: Build plugin
+        working-directory: jaustoolset/wiresharkPlugin/src/Wireshark-3.2.x/build
+        shell: bash
+        run: |
+          cmake ..
+          make
