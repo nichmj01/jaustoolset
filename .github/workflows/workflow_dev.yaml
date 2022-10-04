@@ -9,8 +9,33 @@ on:
     ]
 
 jobs:
-  build:
-    runs-on: ubuntu-20.04
+  # build_ubuntu-20.04:
+  #   runs-on: ubuntu-20.04
+
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v3
+
+  #     - name: Install dependencies
+  #       shell: bash
+  #       run: |
+  #         sudo add-apt-repository universe
+  #         sudo apt-get install -y wireshark-dev libxml2-dev
+
+  #     - name: Create build folder
+  #       working-directory: wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x
+  #       shell: bash
+  #       run: mkdir build
+
+  #     - name: Build plugin
+  #       working-directory: wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x/build
+  #       shell: bash
+  #       run: |
+  #         cmake ..
+  #         make
+
+  build_ubuntu-18.04:
+    runs-on: ubuntu-18.04
 
     steps:
       - name: Checkout code
@@ -23,13 +48,14 @@ jobs:
           sudo apt-get install -y wireshark-dev libxml2-dev
 
       - name: Create build folder
-        working-directory: wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x
+        working-directory: wiresharkPlugin/packet-jaus/src/Wireshark-2.6.x
         shell: bash
         run: mkdir build
 
       - name: Build plugin
-        working-directory: wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x/build
+        working-directory: wiresharkPlugin/packet-jaus/src/Wireshark-2.6.x/build
         shell: bash
         run: |
           cmake ..
           make
+
