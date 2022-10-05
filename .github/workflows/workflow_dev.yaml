@@ -21,7 +21,7 @@ jobs:
         id: cache-bin
         uses: actions/cache@v3
         with:
-          path: wireshark/artifacts
+          path: wireshark_artifacts
           key: ubuntu-20_04-cache
 
       - name: Checkout Wireshark source
