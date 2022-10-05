@@ -18,6 +18,7 @@ jobs:
         run: |
           echo $PWD  
           mkdir -p $GITHUB_WORKSPACE/wireshark_artifacts
+          ls $GITHUB_WORKSPACE/wireshark_artifacts
 
       - name: Cache built binaries
         id: cache-bin
@@ -26,50 +27,50 @@ jobs:
           path: $GITHUB_WORKSPACE/wireshark_artifacts
           key: ubuntu-20_04-cache
 
-      - name: Checkout Wireshark source
-        if: steps.cache-bin.outputs.cache-hit != 'true'
-        uses: actions/checkout@v3
-        with:
-          repository: wireshark/wireshark
-          ref: v3.2.18
-          path: wireshark
+      # - name: Checkout Wireshark source
+      #   if: steps.cache-bin.outputs.cache-hit != 'true'
+      #   uses: actions/checkout@v3
+      #   with:
+      #     repository: wireshark/wireshark
+      #     ref: v3.2.18
+      #     path: wireshark
 
-      - name: Install Wireshark dependencies
-        if: steps.cache-bin.outputs.cache-hit != 'true'
-        working-directory: wireshark
-        run: sudo tools/debian-setup.sh python3-pip ninja-build -y
+      # - name: Install Wireshark dependencies
+      #   if: steps.cache-bin.outputs.cache-hit != 'true'
+      #   working-directory: wireshark
+      #   run: sudo tools/debian-setup.sh python3-pip ninja-build -y
 
-      - name: Make build directory
-        if: steps.cache-bin.outputs.cache-hit != 'true'
-        working-directory: wireshark
-        run: mkdir build
+      # - name: Make build directory
+      #   if: steps.cache-bin.outputs.cache-hit != 'true'
+      #   working-directory: wireshark
+      #   run: mkdir build
 
-      - name: Build and install wireshark
-        if: steps.cache-bin.outputs.cache-hit != 'true'  
-        working-directory: wireshark/build
-        run: |
-          cmake -GNinja --install-prefix $GITHUB_WORKSPACE/wireshark_artifacts ..
-          cmake --build .
-          cmake --install . 
+      # - name: Build and install wireshark
+      #   if: steps.cache-bin.outputs.cache-hit != 'true'  
+      #   working-directory: wireshark/build
+      #   run: |
+      #     cmake -GNinja --install-prefix $GITHUB_WORKSPACE/wireshark_artifacts ..
+      #     cmake --build .
+      #     cmake --install . 
 
-      - name: Checkout plugin code
-        uses: actions/checkout@v3
+      # - name: Checkout plugin code
+      #   uses: actions/checkout@v3
 
-      - name: Install dependencies
-        shell: bash
-        run: |
-          sudo add-apt-repository universe
-          sudo apt-get update
-          sudo apt-get install -y libxml2-dev
+      # - name: Install dependencies
+      #   shell: bash
+      #   run: |
+      #     sudo add-apt-repository universe
+      #     sudo apt-get update
+      #     sudo apt-get install -y libxml2-dev
 
-      - name: Create build folder
-        working-directory: wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x
-        shell: bash
-        run: mkdir build
+      # - name: Create build folder
+      #   working-directory: wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x
+      #   shell: bash
+      #   run: mkdir build
 
       - name: List wireshark_artifacts
         shell: bash
-        run: ls -R $GITHUB_WORKSPACE/wireshark_artifacts  
+        run: ls $GITHUB_WORKSPACE/wireshark_artifacts
 
       - name: Configure plugin
         working-directory: wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x/build
