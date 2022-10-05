@@ -13,19 +13,19 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-      - name: Make wireshark_artifacts directory
-        if: steps.cache-bin.outputs.cache-hit != 'true'
-        run: mkdir wireshark_artifacts
+      # - name: Make wireshark_artifacts directory
+      #   if: steps.cache-bin.outputs.cache-hit != 'true'
+      #   run: mkdir wireshark_artifacts
 
-      - name: Cache built binaries
-        id: cache-bin
-        uses: actions/cache@v3
-        with:
-          path: wireshark_artifacts
-          key: ubuntu-20_04-cache
+      # - name: Cache built binaries
+      #   id: cache-bin
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: wireshark_artifacts
+      #     key: ubuntu-20_04-cache
 
       - name: Checkout Wireshark source
-        if: steps.cache-bin.outputs.cache-hit != 'true'
+        # if: steps.cache-bin.outputs.cache-hit != 'true'
         uses: actions/checkout@v3
         with:
           repository: wireshark/wireshark
@@ -33,28 +33,35 @@ jobs:
           path: wireshark
 
       - name: Install Wireshark dependencies
-        if: steps.cache-bin.outputs.cache-hit != 'true'
+        # if: steps.cache-bin.outputs.cache-hit != 'true'
         working-directory: wireshark
         run: sudo tools/debian-setup.sh python3-pip ninja-build -y
 
       - name: Make build directory
-        if: steps.cache-bin.outputs.cache-hit != 'true'
+        # if: steps.cache-bin.outputs.cache-hit != 'true'
         working-directory: wireshark
         run: mkdir build
 
       - name: Build and install wireshark
-        if: steps.cache-bin.outputs.cache-hit != 'true'  
+        # if: steps.cache-bin.outputs.cache-hit != 'true'  
         working-directory: wireshark/build
         run: |
           cmake -GNinja --install-prefix $GITHUB_WORKSPACE/wireshark_artifacts ..
           cmake --build .
           cmake --install . 
 
-      - name: Upload wireshark_artifacts
+      - name: Upload build artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: wireshark_artifacts
-          path: wireshark_artifacts
+          name: wireshark_build_artifacts
+          path: wireshark/build
+
+
+      # - name: Upload wireshark_artifacts
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: wireshark_artifacts
+      #     path: wireshark_artifacts
 
       # - name: Checkout plugin code
       #   uses: actions/checkout@v3
