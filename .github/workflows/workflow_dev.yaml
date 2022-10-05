@@ -64,6 +64,10 @@ jobs:
         shell: bash
         run: mkdir build
 
+      - name: List wireshark_artifacts
+        bash: shell
+        run: ls -R $GITHUB_WORKSPACE/wireshark_artifacts  
+
       - name: Configure plugin
         working-directory: wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x/build
         shell: bash
