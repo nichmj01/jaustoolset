@@ -69,7 +69,7 @@ jobs:
         working-directory: wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x/build
         shell: bash
         run: |
-          cmake -D CMAKE_PREFIX_PATH=$GITHUB_WORKSPACE/wireshark_artifacts ..
+          cmake -DCMAKE_PREFIX_PATH=$GITHUB_WORKSPACE/wireshark_artifacts ..
           cmake --build .
 
 
