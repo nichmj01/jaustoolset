@@ -13,9 +13,8 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-      # - name: Make wireshark_artifacts directory
-      #   if: steps.cache-bin.outputs.cache-hit != 'true'
-      #   run: mkdir wireshark_artifacts
+      - name: Make wireshark_artifacts directory
+        run: mkdir wireshark_artifacts
 
       # - name: Cache built binaries
       #   id: cache-bin
