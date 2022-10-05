@@ -15,11 +15,11 @@ jobs:
     steps:
       - name: Make wireshark_artifacts directory
         shell: bash  
-        run: mkdir -p ${{ env.GITHUB_WORKSPACE }}/wireshark_artifacts
+        run: mkdir -p $GITHUB_WORKSPACE/wireshark_artifacts
 
       - name: List wireshark_artifacts
         shell: bash
-        run: ls ${{ env.GITHUB_WORKSPACE }}/wireshark_artifacts
+        run: ls $GITHUB_WORKSPACE/wireshark_artifacts
 
       - name: Cache built binaries
         id: cache-bin
@@ -50,13 +50,13 @@ jobs:
         if: steps.cache-bin.outputs.cache-hit != 'true'  
         working-directory: wireshark/build
         run: |
-          cmake -GNinja --install-prefix ${{ env.GITHUB_WORKSPACE }}/wireshark_artifacts ..
+          cmake -GNinja --install-prefix $GITHUB_WORKSPACE/wireshark_artifacts ..
           cmake --build .
           cmake --install . 
 
       - name: List wireshark_artifacts
         shell: bash
-        run: ls -R ${{ env.GITHUB_WORKSPACE }}/wireshark_artifacts
+        run: ls -R $GITHUB_WORKSPACE/wireshark_artifacts
 
       # - name: Checkout plugin code
       #   uses: actions/checkout@v3
