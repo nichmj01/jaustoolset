@@ -82,11 +82,11 @@ jobs:
         shell: bash
         run: cmake -DCMAKE_PREFIX_PATH=$GITHUB_WORKSPACE/wireshark_artifacts/lib/wireshark ..
       
-      # - name: Upload CMakeCache
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: plugin_build_artifacts
-      #     path: wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x/build
+      - name: Upload CMakeCache
+        uses: actions/upload-artifact@v3
+        with:
+          name: plugin_build_artifacts
+          path: wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x/build
 
       # - name: Build plugin
       #   shell: bash
