@@ -13,33 +13,47 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
+      - name: Cache built binaries
+        id: cache-bin
+        uses: actions/cache@v3
+        with:
+          path: bin
+          key: ubuntu-20_04-cache
+
       - name: Checkout Wireshark source
+        if: steps.cache-bin.outputs.cache-hit != 'true'
         uses: actions/checkout@v3
         with:
-          repository: 'wireshark/wireshark'
-          ref: 'v3.2.18'
-          path: 'wireshark'
+          repository: wireshark/wireshark
+          ref: v3.2.18
+          path: wireshark
 
       - name: Install Wireshark dependencies
+        if: steps.cache-bin.outputs.cache-hit != 'true'
         working-directory: wireshark
         run: sudo tools/debian-setup.sh python3-pip ninja-build -y
 
-      - name: mkdir
+      - name: Make directories
+        if: steps.cache-bin.outputs.cache-hit != 'true'
         working-directory: wireshark
-        run: mkdir build
+        run: |
+          mkdir bin
+          mkdir build
 
-      - name: Cmake
+      - name: Configure cmake
+        if: steps.cache-bin.outputs.cache-hit != 'true'  
         working-directory: wireshark/build
-        run: cmake -GNinja ..
+        run: cmake -GNinja .. --install-prefix ../bin
       
       - name: Build
+        if: steps.cache-bin.outputs.cache-hit != 'true'
         working-directory: wireshark/build
         run: cmake --build .
 
       - name: Install
+        if: steps.cache-bin.outputs.cache-hit != 'true'  
         working-directory: wireshark/build
-        run: cmake --install .
-
+        run: cmake --install . 
 
 
   # build_ubuntu-20_04:
