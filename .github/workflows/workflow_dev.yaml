@@ -54,9 +54,15 @@ jobs:
       #     cmake --build .
       #     cmake --install . 
 
-      # - name: List wireshark_artifacts
-      #   shell: bash
-      #   run: ls -R $GITHUB_WORKSPACE/wireshark_artifacts
+      - name: List wireshark_artifacts
+        if: always
+        shell: bash
+        run: ls -R $GITHUB_WORKSPACE
+
+      - name: List wireshark_artifacts
+        if: always
+        shell: bash
+        run: ls -R $GITHUB_WORKSPACE/wireshark_artifacts
 
       # - name: Checkout plugin code
       #   uses: actions/checkout@v3
