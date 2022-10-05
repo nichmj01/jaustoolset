@@ -25,38 +25,38 @@ jobs:
         id: cache-bin
         uses: actions/cache@v3
         with:
-          path: ${{ env.GITHUB_WORKSPACE }}/wireshark_artifacts
+          path: $GITHUB_WORKSPACE/wireshark_artifacts
           key: ubuntu-20_04-cache
 
-      - name: Checkout Wireshark source
-        if: steps.cache-bin.outputs.cache-hit != 'true'
-        uses: actions/checkout@v3
-        with:
-          repository: wireshark/wireshark
-          ref: v3.2.18
-          path: wireshark
+      # - name: Checkout Wireshark source
+      #   if: steps.cache-bin.outputs.cache-hit != 'true'
+      #   uses: actions/checkout@v3
+      #   with:
+      #     repository: wireshark/wireshark
+      #     ref: v3.2.18
+      #     path: wireshark
 
-      - name: Install Wireshark dependencies
-        if: steps.cache-bin.outputs.cache-hit != 'true'
-        working-directory: wireshark
-        run: sudo tools/debian-setup.sh python3-pip ninja-build -y
+      # - name: Install Wireshark dependencies
+      #   if: steps.cache-bin.outputs.cache-hit != 'true'
+      #   working-directory: wireshark
+      #   run: sudo tools/debian-setup.sh python3-pip ninja-build -y
 
-      - name: Make build directory
-        if: steps.cache-bin.outputs.cache-hit != 'true'
-        working-directory: wireshark
-        run: mkdir build
+      # - name: Make build directory
+      #   if: steps.cache-bin.outputs.cache-hit != 'true'
+      #   working-directory: wireshark
+      #   run: mkdir build
 
-      - name: Build and install wireshark
-        if: steps.cache-bin.outputs.cache-hit != 'true'  
-        working-directory: wireshark/build
-        run: |
-          cmake -GNinja --install-prefix $GITHUB_WORKSPACE/wireshark_artifacts ..
-          cmake --build .
-          cmake --install . 
+      # - name: Build and install wireshark
+      #   if: steps.cache-bin.outputs.cache-hit != 'true'  
+      #   working-directory: wireshark/build
+      #   run: |
+      #     cmake -GNinja --install-prefix $GITHUB_WORKSPACE/wireshark_artifacts ..
+      #     cmake --build .
+      #     cmake --install . 
 
-      - name: List wireshark_artifacts
-        shell: bash
-        run: ls -R $GITHUB_WORKSPACE/wireshark_artifacts
+      # - name: List wireshark_artifacts
+      #   shell: bash
+      #   run: ls -R $GITHUB_WORKSPACE/wireshark_artifacts
 
       # - name: Checkout plugin code
       #   uses: actions/checkout@v3
