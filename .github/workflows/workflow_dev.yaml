@@ -13,11 +13,12 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-      - name: Checkout wireshark code
+      - name: Checkout Wireshark source
         uses: actions/checkout@v3
         with:
           repository: 'wireshark/wireshark'
-          # ref: '3.2.18'
+          ref: 'v3.2.18'
+
 
   # build_ubuntu-20_04:
   #   runs-on: ubuntu-20.04
