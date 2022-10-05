@@ -14,13 +14,16 @@ jobs:
 
     steps:
       - name: Make wireshark_artifacts directory
-        run: mkdir wireshark_artifacts
+        shell: bash  
+        run: |
+          echo $PWD  
+          mkdir -p $GITHUB_WORKSPACE/wireshark_artifacts
 
       - name: Cache built binaries
         id: cache-bin
         uses: actions/cache@v3
         with:
-          path: wireshark_artifacts
+          path: $GITHUB_WORKSPACE/wireshark_artifacts
           key: ubuntu-20_04-cache
 
       - name: Checkout Wireshark source
