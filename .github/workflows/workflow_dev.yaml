@@ -73,7 +73,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: plugin_build_artifacts
-          path: build
+          path: wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x/build
 
       - name: Build plugin
         shell: bash
