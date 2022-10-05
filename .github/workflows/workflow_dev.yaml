@@ -58,9 +58,9 @@ jobs:
       #   shell: bash
       #   run: ls -R $GITHUB_WORKSPACE
 
-      # - name: List wireshark_artifacts
-      #   shell: bash
-      #   run: ls -R $GITHUB_WORKSPACE/wireshark_artifacts
+      - name: List wireshark_artifacts
+        shell: bash
+        run: ls -R $GITHUB_WORKSPACE/wireshark_artifacts/lib/wireshark
 
       - name: Checkout plugin code
         uses: actions/checkout@v3
@@ -80,7 +80,7 @@ jobs:
       - name: Configure plugin
         working-directory: wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x/build
         shell: bash
-        run: cmake -DCMAKE_PREFIX_PATH=$GITHUB_WORKSPACE/wireshark_artifacts/lib/wireshark ..
+        run: cmake -D CMAKE_PREFIX_PATH=$GITHUB_WORKSPACE/wireshark_artifacts/lib/wireshark ..
       
       - name: Upload CMakeCache
         uses: actions/upload-artifact@v3
