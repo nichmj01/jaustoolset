@@ -2,7 +2,7 @@ project(JausDissector)
 
 cmake_minimum_required(VERSION 3.16)
 
-find_package(wireshark 3.2)
+find_package(Wireshark 3.2)
 find_package(LibXml2)
 
 INCLUDE(UseMakePluginReg.cmake)
