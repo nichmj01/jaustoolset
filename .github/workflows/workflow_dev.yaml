@@ -80,7 +80,7 @@ jobs:
       - name: Configure plugin
         working-directory: wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x/build
         shell: bash
-        run: cmake -D CMAKE_PREFIX_PATH=$GITHUB_WORKSPACE/wireshark_artifacts/lib/wireshark ..
+        run: cmake -D CMAKE_PREFIX_PATH=/home/runner/work/jaustoolset/jaustoolset/wireshark_artifacts/lib/wireshark/ ..
       
       - name: Upload CMakeCache
         uses: actions/upload-artifact@v3
