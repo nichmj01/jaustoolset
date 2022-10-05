@@ -55,12 +55,12 @@ jobs:
       #     cmake --install . 
 
       - name: List wireshark_artifacts
-        if: always
+        if: ${{ always() }}
         shell: bash
         run: ls -R $GITHUB_WORKSPACE
 
       - name: List wireshark_artifacts
-        if: always
+        if: ${{ always() }}
         shell: bash
         run: ls -R $GITHUB_WORKSPACE/wireshark_artifacts
 
