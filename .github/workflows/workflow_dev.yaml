@@ -22,7 +22,7 @@ jobs:
 
       - name: Install Wireshark dependencies
         working-directory: wireshark
-        run: sudo tools/debian-setup.sh --install-all python3-pip -y
+        run: sudo tools/debian-setup.sh python3-pip -y
 
       - name: mkdir
         working-directory: wireshark
