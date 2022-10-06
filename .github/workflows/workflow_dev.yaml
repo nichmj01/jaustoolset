@@ -54,44 +54,44 @@ jobs:
           cmake --build .
           cmake --install . 
 
-      # # - name: List wireshark_artifacts
-      # #   shell: bash
-      # #   run: ls -R $GITHUB_WORKSPACE
-
-      # # - name: List wireshark_artifacts
-      # #   shell: bash
-      # #   run: ls -R $GITHUB_WORKSPACE/wireshark_artifacts/lib/wireshark
-
-      # - name: Checkout plugin code
-      #   uses: actions/checkout@v3
-
-      # - name: Install dependencies
+      # - name: List wireshark_artifacts
       #   shell: bash
-      #   run: |
-      #     sudo add-apt-repository universe
-      #     sudo apt-get update
-      #     sudo apt-get install -y libxml2-dev
+      #   run: ls -R $GITHUB_WORKSPACE
 
-      # - name: Create build folder
-      #   working-directory: wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x
+      # - name: List wireshark_artifacts
       #   shell: bash
-      #   run: mkdir build
+      #   run: ls -R $GITHUB_WORKSPACE/wireshark_artifacts/lib/wireshark
 
-      # - name: Configure plugin
-      #   working-directory: wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x/build
-      #   shell: bash
-      #   run: cmake -DCMAKE_PREFIX_PATH=/home/runner/work/jaustoolset/wireshark_artifacts ..
+      - name: Checkout plugin code
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        shell: bash
+        run: |
+          sudo add-apt-repository universe
+          sudo apt-get update
+          sudo apt-get install -y libxml2-dev
+
+      - name: Create build folder
+        working-directory: wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x
+        shell: bash
+        run: mkdir build
+
+      - name: Configure plugin
+        working-directory: wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x/build
+        shell: bash
+        run: cmake -DCMAKE_PREFIX_PATH=/home/runner/work/jaustoolset/wireshark_artifacts ..
       
-      # # - name: Upload CMakeCache
-      # #   uses: actions/upload-artifact@v3
-      # #   with:
-      # #     name: plugin_build_artifacts
-      # #     path: wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x/build
+      # - name: Upload CMakeCache
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: plugin_build_artifacts
+      #     path: wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x/build
 
-      # - name: Build plugin
-      #   working-directory: wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x/build
-      #   shell: bash
-      #   run: cmake --build .
+      - name: Build plugin
+        working-directory: wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x/build
+        shell: bash
+        run: cmake --build .
 
 
   # build_ubuntu-20_04:
