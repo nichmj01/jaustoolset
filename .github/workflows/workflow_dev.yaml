@@ -52,6 +52,7 @@ jobs:
         if: steps.cache-bin.outputs.cache-hit != 'true'  
         working-directory: wireshark/build
         run: |
+          pwd
           cmake -GNinja -DCMAKE_INSTALL_PREFIX=/home/runner/work/jaustoolset/wireshark_artifacts ..
           cmake --build .
           cmake --install . 
