@@ -25,7 +25,9 @@ jobs:
         id: cache-bin
         uses: actions/cache@v3
         with:
-          path: /home/runner/work/jaustoolset/wireshark_artifacts
+          path: |
+            /home/runner/work/jaustoolset/wireshark_artifacts
+            /home/runner/work/jaustoolset/jaustoolset/wireshark/build/config.h
           key: ubuntu-20_04-cache
 
       - name: Checkout Wireshark source
@@ -87,6 +89,11 @@ jobs:
       #   with:
       #     name: plugin_build_artifacts
       #     path: wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x/build
+
+      - name: Copy config.h
+        working-directory: wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x/build
+        shell: bash
+        run: cp /runner/work/jaustoolset/jaustoolset/wireshark/build/config.h ..
 
       - name: Build plugin
         working-directory: wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x/build

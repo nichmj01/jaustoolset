@@ -7,7 +7,7 @@ find_package(LibXml2)
 
 INCLUDE(UseMakePluginReg.cmake)
 
-find_package(PkgConfig REQUIRED)
+# find_package(PkgConfig REQUIRED)
 pkg_search_module(GLIB2 REQUIRED glib-2.0)
 include_directories (${GLIB2_INCLUDE_DIRS} ${Wireshark_INCLUDE_DIR} ${LIBXML2_INCLUDE_DIR})
 
@@ -48,6 +48,6 @@ set_target_properties(jaus PROPERTIES
 		FOLDER "Plugins"
 )
 
-link_directories(${Wireshark_LIB_DIR})
-
+# Had to copy config.h from wireshark/build to src folder within jaustoolset
+target_link_directories(jaus PUBLIC ${Wireshark_LIB_DIR})
 target_link_libraries(jaus wireshark)
