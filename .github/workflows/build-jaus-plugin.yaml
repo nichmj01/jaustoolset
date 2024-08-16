@@ -3,19 +3,19 @@ name: build-jaus-plugin
 on:
   workflow_call:
 
-  push:
-    branches: [
-      test_build_wireshark_source
-    ]
+  # push:
+  #   branches: [
+  #     test_build_wireshark_source
+  #   ]
 
 jobs:
   build_ubuntu-20_04:
     runs-on: ubuntu-20.04
 
     steps:
-      - name: Cache built binaries
+      - name: Restore built binaries from cache
         id: cache-bin
-        uses: actions/cache@v4
+        uses: actions/cache/restore@v4
         with:
           path: |
             /home/runner/work/jaustoolset/wireshark_artifacts

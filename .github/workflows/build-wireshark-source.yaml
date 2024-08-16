@@ -3,10 +3,10 @@ name: build-wireshark-source
 on:
   workflow_call:
 
-  # push:
-  #   branches: [
-  #     test_build_wireshark_source
-  #   ]
+  push:
+    branches: [
+      test_build_wireshark_source
+    ]
 
 jobs:
   build_ubuntu-20_04:
@@ -26,8 +26,8 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
-            /home/runner/work/jaustoolset/wireshark_artifacts
-            /home/runner/work/jaustoolset/jaustoolset/wireshark/build/config.h
+            $GITHUB_WORKSPACE/wireshark_artifacts
+            $GITHUB_WORKSPACE/jaustoolset/wireshark/build/config.h
           key: ubuntu-20_04-cache
 
       - name: Checkout Wireshark source
@@ -57,7 +57,7 @@ jobs:
         if: steps.cache-bin.outputs.cache-hit != 'true'  
         working-directory: wireshark/build
         run: |
-          cmake -GNinja -DCMAKE_INSTALL_PREFIX=/home/runner/work/jaustoolset/wireshark_artifacts ..
+          cmake -GNinja -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/wireshark_artifacts ..
           cmake --build .
           cmake --install . 
 
