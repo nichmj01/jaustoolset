@@ -18,18 +18,14 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
-            /home/runner/work/jaustoolset/wireshark_artifacts
-            /home/runner/work/jaustoolset/jaustoolset/wireshark/build/config.h
+            /wireshark_artifacts
+            /jaustoolset/wireshark/build/config.h
           key: ubuntu-20_04-cache
 
       - name: List wireshark_artifacts
         if: steps.cache-bin.outputs.cache-hit == 'true'
         shell: bash
         run: ls -R $GITHUB_WORKSPACE
-
-      # # - name: List wireshark_artifacts
-      # #   shell: bash
-      # #   run: ls -R $GITHUB_WORKSPACE/wireshark_artifacts/lib/wireshark
 
       # - name: Checkout plugin code
       #   uses: actions/checkout@v3
