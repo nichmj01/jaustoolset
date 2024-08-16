@@ -3,10 +3,10 @@ name: build-wireshark-source
 on:
   workflow_call:
 
-  push:
-    branches: [
-      test_build_wireshark_source
-    ]
+  # push:
+  #   branches: [
+  #     test_build_wireshark_source
+  #   ]
 
 jobs:
   build_ubuntu-20_04:
@@ -68,8 +68,8 @@ jobs:
         id: cache-bin
         uses: actions/cache/save@v4
         with:
+          key: ubuntu-20_04-cache
           path: |
             ./wireshark_artifacts/**
             ./wireshark/build/config.h
-          key: ubuntu-20_04-cache
 
