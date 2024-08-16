@@ -1,4 +1,4 @@
-name: build-wireshark-source
+name: build-wireshark-appimage
 
 on:
   workflow_call:
@@ -35,5 +35,5 @@ jobs:
       - name: Build and install wireshark
         working-directory: wireshark/build
         run: |
-          cmake -GNinja ..
+          cmake ..
           make wireshark_appimage
