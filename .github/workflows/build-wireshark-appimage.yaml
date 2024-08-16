@@ -1,4 +1,4 @@
-name: build-wireshark-appimage
+name: build-wireshark-debian
 
 on:
   workflow_call:
@@ -36,14 +36,14 @@ jobs:
         working-directory: wireshark/build
         run: cmake -GNinja ..
 
-      # - name: Build and install wireshark
+      # - name: List targets
       #   working-directory: wireshark/build
       #   run: |
-      #     ninja
-      #     ninja wireshark_appimage
-
-      - name: List targets
-        working-directory: wireshark/build
-        run: |
-          ninja -t targets all
+      #     ninja -t targets all
       
+      - name: Build debian package
+        working-directory: wireshark
+        run: |
+          ln -snf packaging/debian
+          export DEB_BUILD_OPTIONS="nocheck"
+          dpkg-buildpackage -b -us -uc -jauto          
