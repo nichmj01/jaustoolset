@@ -1,0 +1,39 @@
+name: build-wireshark-source
+
+on:
+  workflow_call:
+
+  push:
+    branches: [
+      test_build_wireshark_source
+    ]
+
+jobs:
+  build_ubuntu-20_04:
+    runs-on: ubuntu-20.04
+
+    steps:
+      # - name: Make wireshark_artifacts directory
+      #   shell: bash  
+      #   run: mkdir -p $GITHUB_WORKSPACE/wireshark_artifacts
+
+      - name: Checkout Wireshark source
+        uses: actions/checkout@v4
+        with:
+          repository: wireshark/wireshark
+          ref: v3.2.18
+          path: wireshark
+ 
+      - name: Install Wireshark dependencies
+        working-directory: wireshark
+        run: sudo tools/debian-setup.sh python3-pip ninja-build -y
+
+      - name: Make build directory
+        working-directory: wireshark
+        run: mkdir build
+
+      - name: Build and install wireshark
+        working-directory: wireshark/build
+        run: |
+          cmake -GNinja ..
+          make wireshark_appimage
