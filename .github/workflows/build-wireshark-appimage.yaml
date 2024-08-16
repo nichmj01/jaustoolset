@@ -36,4 +36,5 @@ jobs:
         working-directory: wireshark/build
         run: |
           cmake -GNinja ..
-          make wireshark_appimage
+          ninja
+          ninja wireshark_appimage
