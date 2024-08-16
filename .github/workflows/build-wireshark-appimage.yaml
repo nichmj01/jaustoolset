@@ -17,24 +17,34 @@ jobs:
       #   shell: bash  
       #   run: mkdir -p $GITHUB_WORKSPACE/wireshark_artifacts
 
-      - name: Checkout Wireshark source
-        uses: actions/checkout@v4
+      - name: Restore built binaries from cache
+        id: cache-bin
+        uses: actions/cache/restore@v4
         with:
-          repository: wireshark/wireshark
-          ref: v3.2.18
-          path: wireshark
+          key: ubuntu-20_04-cache
+          fail-on-cache-miss: true
+          path: |
+            ./wireshark_artifacts/**
+            ./wireshark/build/config.h
+
+      # - name: Checkout Wireshark source
+      #   uses: actions/checkout@v4
+      #   with:
+      #     repository: wireshark/wireshark
+      #     ref: v3.2.18
+      #     path: wireshark
  
-      - name: Install Wireshark dependencies
-        working-directory: wireshark
-        run: sudo tools/debian-setup.sh python3-pip ninja-build -y
+      # - name: Install Wireshark dependencies
+      #   working-directory: wireshark
+      #   run: sudo tools/debian-setup.sh python3-pip ninja-build -y
 
-      - name: Make build directory
-        working-directory: wireshark
-        run: mkdir build
+      # - name: Make build directory
+      #   working-directory: wireshark
+      #   run: mkdir build
 
-      - name: Configure cmake
-        working-directory: wireshark/build
-        run: cmake -GNinja ..
+      # - name: Configure cmake
+      #   working-directory: wireshark/build
+      #   run: cmake -GNinja ..
 
       # - name: List targets
       #   working-directory: wireshark/build
@@ -42,7 +52,7 @@ jobs:
       #     ninja -t targets all
       
       - name: Build debian package
-        working-directory: wireshark
+        working-directory: wireshark_artifacts
         run: |
           ln -snf packaging/debian
           export DEB_BUILD_OPTIONS="nocheck"
