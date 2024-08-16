@@ -75,20 +75,25 @@ jobs:
         shell: bash
         run: cmake --build .
 
-      - name: Install plugin
+      # - name: Install plugin
+      #   working-directory: jaustoolset/wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x/build
+      #   shell: bash
+      #   run: sudo cmake --install .
+
+      - name: List wireshark_artifacts
         working-directory: jaustoolset/wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x/build
         shell: bash
-        run: sudo cmake --install .
+        run: ls -R ./
 
-      - name: Upload plugin as artifact
-        uses: actions/upload-artifact@v4
-        with:
-          path: |
-            ./jaus_plugin_lib/**
+      # - name: Upload plugin as artifact
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     path: |
+      #       ./jaus_plugin_lib/**
 
-      - name: Save plugin to cache
-        uses: actions/cache/save@v4
-        with:
-          key: ubuntu-20_04-jaus_plugin-cache
-          path: |
-            ./jaus_plugin_lib/**
+      # - name: Save plugin to cache
+      #   uses: actions/cache/save@v4
+      #   with:
+      #     key: ubuntu-20_04-jaus_plugin-cache
+      #     path: |
+      #       ./jaus_plugin_lib/**
