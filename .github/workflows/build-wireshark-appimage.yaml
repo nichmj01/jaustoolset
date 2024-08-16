@@ -26,7 +26,7 @@ jobs:
  
       - name: Install Wireshark dependencies
         working-directory: wireshark
-        run: sudo tools/debian-setup.sh python3-pip ninja-build -y
+        run: sudo tools/debian-setup.sh --install-optional python3-pip ninja-build -y
 
       - name: Make build directory
         working-directory: wireshark
@@ -35,5 +35,5 @@ jobs:
       - name: Build and install wireshark
         working-directory: wireshark/build
         run: |
-          cmake ..
+          cmake -GNinja ..
           make wireshark_appimage
