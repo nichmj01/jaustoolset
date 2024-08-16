@@ -18,8 +18,8 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: |
-            /home/runner/work/jaustoolset/wireshark_artifacts
-            /home/runner/work/jaustoolset/jaustoolset/wireshark/build/config.h
+            wireshark_artifacts/**
+            jaustoolset/wireshark/build/config.h
           key: ubuntu-20_04-cache
 
       - name: List wireshark_artifacts
@@ -27,25 +27,25 @@ jobs:
         shell: bash
         run: ls -R $GITHUB_WORKSPACE
 
-      # - name: Checkout plugin code
-      #   uses: actions/checkout@v3
+      - name: Checkout plugin code
+        uses: actions/checkout@v3
 
-      # - name: Install dependencies
-      #   shell: bash
-      #   run: |
-      #     sudo add-apt-repository universe
-      #     sudo apt-get update
-      #     sudo apt-get install -y libxml2-dev
+      - name: Install dependencies
+        shell: bash
+        run: |
+          sudo add-apt-repository universe
+          sudo apt-get update
+          sudo apt-get install -y libxml2-dev
 
-      # - name: Create build folder
-      #   working-directory: wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x
-      #   shell: bash
-      #   run: mkdir build
+      - name: Create build folder
+        working-directory: wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x
+        shell: bash
+        run: mkdir build
 
-      # - name: Configure plugin
-      #   working-directory: wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x/build
-      #   shell: bash
-      #   run: cmake -DCMAKE_PREFIX_PATH=/home/runner/work/jaustoolset/wireshark_artifacts ..
+      - name: Configure plugin
+        working-directory: wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x/build
+        shell: bash
+        run: cmake -DCMAKE_PREFIX_PATH=$GITHUB_WORKSPACE/wireshark_artifacts ..
       
       # # - name: Upload CMakeCache
       # #   uses: actions/upload-artifact@v3
@@ -53,12 +53,16 @@ jobs:
       # #     name: plugin_build_artifacts
       # #     path: wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x/build
 
-      # - name: Copy config.h
-      #   working-directory: wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x/build
-      #   shell: bash
-      #   run: cp /runner/work/jaustoolset/jaustoolset/wireshark/build/config.h ..
+      - name: Copy config.h
+        working-directory: wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x/build
+        shell: bash
+        run: cp /runner/work/jaustoolset/jaustoolset/wireshark/build/config.h ..
 
-      # - name: Build plugin
-      #   working-directory: wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x/build
-      #   shell: bash
-      #   run: cmake --build .
+      - name: Build plugin
+        working-directory: wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x/build
+        shell: bash
+        run: cmake --build .
+
+      - name: List $GITHUB_WORKSPACE contents
+        shell: bash
+        run: ls -R $GITHUB_WORKSPACE
