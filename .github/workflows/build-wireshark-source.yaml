@@ -15,7 +15,7 @@ jobs:
     steps:
       - name: List $GITHUB_WORKSPACE
         shell: bash
-        run: ls -R $GITHUB_WORKSPACE
+        run: ls $GITHUB_WORKSPACE
 
       - name: Make wireshark_artifacts directory
         shell: bash  
@@ -23,7 +23,7 @@ jobs:
 
       - name: List $GITHUB_WORKSPACE
         shell: bash
-        run: ls -R $GITHUB_WORKSPACE
+        run: ls $GITHUB_WORKSPACE
 
       # - name: Cache built binaries
       #   id: cache-bin
@@ -43,7 +43,7 @@ jobs:
 
       - name: List $GITHUB_WORKSPACE
         shell: bash
-        run: ls -R $GITHUB_WORKSPACE
+        run: ls $GITHUB_WORKSPACE
   
       - name: Install Wireshark dependencies
         working-directory: wireshark
@@ -62,7 +62,7 @@ jobs:
 
       - name: List wireshark_artifacts
         shell: bash
-        run: ls -R $GITHUB_WORKSPACE
+        run: ls $GITHUB_WORKSPACE
 
       - name: Save built binaries to cache
         id: cache-bin
