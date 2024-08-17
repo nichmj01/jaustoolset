@@ -15,30 +15,35 @@ jobs:
       PLATFORM: x64
 
     steps:
-      - name: Install Flex 
-        run: choco install winflexbison3 -y
+      # - name: Install Flex 
+      #   run: choco install winflexbison3 -y
 
-      - name: Install Qt6
-        run: choco install qt6-base-dev -y --params "'/Path'"
+      # - name: Install Qt6
+      #   run: choco install qt6-base-dev -y --params "'/Path'"
 
-      - name: Checkout Wireshark source
-        uses: actions/checkout@v4
-        with:
-          repository: wireshark/wireshark
-          ref: v3.6.24
-          path: wireshark
+      # - name: Checkout Wireshark source
+      #   uses: actions/checkout@v4
+      #   with:
+      #     repository: wireshark/wireshark
+      #     ref: v3.6.24
+      #     path: wireshark
  
       - name: Make build directory
         working-directory: wireshark
         run: mkdir build
 
-      - name: Build and install wireshark
-        working-directory: wireshark/build
-        run: |
-          $env:WIRESHARK_BASE_DIR=$GITHUB_WORKSPACE
-          cmake -G "Visual Studio 17 2022" -A x64 ..
-          cmake --build .
-          cmake --install .
+      - name: Set WIRESHARK_BASE_DIR
+        run: $env:WIRESHARK_BASE_DIR = $env:GITHUB_WORKSPACE
+
+      - name: Check WIRESHARK_BASE_DIR
+        run: echo $env:WIRESHARK_BASE_DIR
+
+      # - name: Build and install wireshark
+      #   working-directory: wireshark/build
+      #   run: |
+      #     cmake -G "Visual Studio 17 2022" -A x64 ..
+      #     cmake --build .
+      #     cmake --install .
 
       # - name: Save built binaries to cache
       #   id: cache-bin
