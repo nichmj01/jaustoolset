@@ -21,27 +21,26 @@ jobs:
       # - name: Install Qt6
       #   run: choco install qt6-base-dev -y --params "'/Path'"
 
-      # - name: Checkout Wireshark source
-      #   uses: actions/checkout@v4
-      #   with:
-      #     repository: wireshark/wireshark
-      #     ref: v3.6.24
-      #     path: wireshark
+      - name: Checkout Wireshark source
+        uses: actions/checkout@v4
+        with:
+          repository: wireshark/wireshark
+          ref: v3.6.24
+          path: wireshark
  
-      # - name: Make build directory
-      #   working-directory: wireshark
-      #   run: mkdir build
+      - name: Make build directory
+        working-directory: wireshark
+        run: mkdir build
 
-      - name: Set WIRESHARK_BASE_DIR
-        run: $env:WIRESHARK_BASE_DIR = $env:GITHUB_WORKSPACE
-
-      - name: Check WIRESHARK_BASE_DIR
-        run: echo $env:WIRESHARK_BASE_DIR
+      - name: Configure cmake
+        working-directory: wireshark/build
+        run: |
+          $env:WIRESHARK_BASE_DIR = $env:GITHUB_WORKSPACE
+          cmake -G "Visual Studio 17 2022" -A x64 ..
 
       # - name: Build and install wireshark
       #   working-directory: wireshark/build
       #   run: |
-      #     cmake -G "Visual Studio 17 2022" -A x64 ..
       #     cmake --build .
       #     cmake --install .
 
