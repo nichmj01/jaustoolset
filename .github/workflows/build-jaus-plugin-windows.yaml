@@ -40,13 +40,11 @@ jobs:
       # - name: List wireshark_artifacts
       #   shell: bash
       #   run: ls $GITHUB_WORKSPACE
-        
-      # - name: Install dependencies
-      #   shell: bash
-      #   run: |
-      #     sudo add-apt-repository universe
-      #     sudo apt-get update
-      #     sudo apt-get install -y libxml2-dev
+
+      - name: Install libxml2
+        run: |
+          curl --url http://xmlsoft.org/sources/win32/64bit/libxml2-2.9.3-win32-x86_64.7z --output libxml2-2.9.3-win32-x86_64.7z
+          7zip x libxml2-2.9.3-win32-x86_64.7z -olibxml2
 
       - name: Create build folder
         working-directory: jaustoolset/wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x
@@ -55,7 +53,7 @@ jobs:
 
       - name: Configure plugin
         working-directory: jaustoolset/wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x/build
-        run: cmake -G "Visual Studio 17 2022" -A x64 -DCMAKE_PREFIX_PATH="${env:GITHUB_WORKSPACE}/wireshark_artifacts" -DCMAKE_INSTALL_PREFIX="${env:GITHUB_WORKSPACE}/jaus_plugin_lib" ..
+        run: cmake -G "Visual Studio 17 2022" -A x64 -DCMAKE_PREFIX_PATH="${env:GITHUB_WORKSPACE}/wireshark_artifacts;${env:GITHUB_WORKSPACE}/libxml2" -DCMAKE_INSTALL_PREFIX="${env:GITHUB_WORKSPACE}/jaus_plugin_lib" ..
       
       # # - name: Upload CMakeCache
       # #   uses: actions/upload-artifact@v3
