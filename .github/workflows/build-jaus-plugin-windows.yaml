@@ -1,0 +1,89 @@
+name: build-jaus-plugin-windows
+
+on:
+  workflow_call:
+
+  push:
+    branches: [
+      test_build_wireshark_source
+    ]
+
+jobs:
+  build_plugin-windows:
+    runs-on: windows-latest
+    env:
+      PLATFORM: x64
+
+    steps:
+      - name: Restore built binaries from cache
+        id: cache-bin
+        uses: actions/cache/restore@v4
+        with:
+          key: windows-cache
+          fail-on-cache-miss: true
+          path: |
+            ./wireshark_artifacts/**
+            ./wireshark/build/config.h
+          
+      - name: Create library directory
+        run: mkdir -p $env:GITHUB_WORKSPACE/jaus_plugin_lib
+
+      # - name: List wireshark_artifacts
+      #   shell: bash
+      #   run: ls $GITHUB_WORKSPACE
+
+      - name: Checkout plugin code
+        uses: actions/checkout@v4
+        with:
+          path: jaustoolset
+
+      # - name: List wireshark_artifacts
+      #   shell: bash
+      #   run: ls $GITHUB_WORKSPACE
+        
+      - name: Install dependencies
+        shell: bash
+        run: |
+          sudo add-apt-repository universe
+          sudo apt-get update
+          sudo apt-get install -y libxml2-dev
+
+      - name: Create build folder
+        working-directory: jaustoolset/wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x
+        shell: bash
+        run: mkdir build
+
+      - name: Configure plugin
+        working-directory: jaustoolset/wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x/build
+        run: cmake -G "Visual Studio 17 2022" -A x64 -DCMAKE_PREFIX_PATH="${env:GITHUB_WORKSPACE}/wireshark_artifacts" -DCMAKE_INSTALL_PREFIX="${env:GITHUB_WORKSPACE}/jaus_plugin_lib" ..
+      
+      # # - name: Upload CMakeCache
+      # #   uses: actions/upload-artifact@v3
+      # #   with:
+      # #     name: plugin_build_artifacts
+      # #     path: wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x/build
+
+      - name: Copy config.h
+        working-directory: jaustoolset/wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x/build
+        shell: bash
+        run: |
+          cp $env:GITHUB_WORKSPACE/wireshark/build/config.h .
+          cp $env:GITHUB_WORKSPACE/wireshark/build/config.h ..
+
+      - name: Build plugin
+        working-directory: jaustoolset/wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x/build
+        run: cmake --build .
+
+      - name: Install plugin
+        working-directory: jaustoolset/wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x/build
+        run: cp ./jaus.dll $env:GITHUB_WORKSPACE/jaus_plugin_lib
+
+      - name: List wireshark_artifacts
+        working-directory: jaustoolset/wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x/build
+        run: ls -R $env:GITHUB_WORKSPACE/jaus_plugin_lib
+
+      - name: Upload plugin as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          path: |
+            ./jaus_plugin_lib/**
