@@ -19,7 +19,7 @@ jobs:
         uses: jurplel/install-qt-action@v4      
         with:
           version: '6.5.2'
-          dir: $GITHUB_WORKSPACE
+          dir: ${{ github.workspace }}
         
       - run: ls $env:GITHUB_WORKSPACE
 
