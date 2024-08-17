@@ -20,6 +20,7 @@ jobs:
         with:
           version: '6.5.2'
           dir: ${{ github.workspace }}
+          modules: qt5compat
         
       - run: ls -r $env:GITHUB_WORKSPACE
 
