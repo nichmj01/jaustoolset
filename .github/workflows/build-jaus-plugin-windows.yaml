@@ -37,6 +37,9 @@ jobs:
       #   shell: bash
       #   run: ls $GITHUB_WORKSPACE
 
+      - name: Install pkg-config
+        run: choco install pkgconfiglite
+
       - name: Download libxml2
         run: |
           curl -LO http://xmlsoft.org/sources/win32/64bit/libxml2-2.9.3-win32-x86_64.7z
