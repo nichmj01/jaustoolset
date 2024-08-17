@@ -13,7 +13,6 @@ jobs:
     runs-on: windows-latest
     env:
       PLATFORM: x64
-      WIRESHARK_BASE_DIR: $GITHUB_WORKSPACE
 
     steps:
       - name: Install Flex 
@@ -36,7 +35,8 @@ jobs:
       - name: Build and install wireshark
         working-directory: wireshark/build
         run: |
-          cmake -A x64 ..
+          $env:WIRESHARK_BASE_DIR=$GITHUB_WORKSPACE
+          cmake -G "Visual Studio 17 2022" -A x64 ..
           cmake --build .
           cmake --install .
 
