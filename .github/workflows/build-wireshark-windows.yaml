@@ -3,10 +3,10 @@ name: build-wireshark-windows
 on:
   workflow_call:
 
-  push:
-    branches: [
-      test_build_wireshark_source
-    ]
+  # push:
+  #   branches: [
+  #     test_build_wireshark_source
+  #   ]
 
 jobs:
   build_windows:
@@ -79,13 +79,13 @@ jobs:
       #   shell: bash
       #   run: ls $GITHUB_WORKSPACE
 
-      - name: Download libxml2
-        run: |
-          curl --url http://xmlsoft.org/sources/win32/64bit/libxml2-2.9.3-win32-x86_64.7z --output libxml2-2.9.3-win32-x86_64.7z
+      # - name: Download libxml2
+      #   run: |
+      #     curl --url http://xmlsoft.org/sources/win32/64bit/libxml2-2.9.3-win32-x86_64.7z --output libxml2-2.9.3-win32-x86_64.7z
 
-      - name: Unzip libxml2
-        run: |
-          7z x libxml2-2.9.3-win32-x86_64.7z -olibxml2
+      # - name: Unzip libxml2
+      #   run: |
+      #     7z x libxml2-2.9.3-win32-x86_64.7z -olibxml2
 
       - name: Create build folder
         working-directory: jaustoolset/wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x
