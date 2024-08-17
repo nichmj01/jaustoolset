@@ -21,10 +21,6 @@ jobs:
           version: '5.15.2'
           dir: ${{ github.workspace }}
         
-      # - run: |
-      #     $env:WIRESHARK_QT6_PREFIX_PATH = "${env:GITHUB_WORKSPACE}\Qt\5.15.2\msvc2019_64"    
-      #     ls -r $env:WIRESHARK_QT6_PREFIX_PATH
-
       - name: Install Flex 
         run: choco install winflexbison3 -y
 
@@ -47,8 +43,7 @@ jobs:
 
       - name: Build wireshark
         working-directory: wireshark/build
-        run: |
-          cmake --build . --config Release
+        run: cmake --build . --config Release
 
       - name: install wireshark
         working-directory: wireshark/build
@@ -59,15 +54,13 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
+          path: $env:GITHUB_WORKSPACE/wireshark_artifacts/**
+
+      - name: Save built binaries to cache
+        id: cache-bin
+        uses: actions/cache/save@v4
+        with:
+          key: windows-cache
           path: |
-            $env:GITHUB_WORKSPACE\wireshark_artifacts
-
-
-      # - name: Save built binaries to cache
-      #   id: cache-bin
-      #   uses: actions/cache/save@v4
-      #   with:
-      #     key: ubuntu-20_04-cache
-      #     path: |
-      #       ./wireshark_artifacts/**
-      #       ./wireshark/build/config.h
+            ./wireshark_artifacts/**
+            ./wireshark/build/config.h
