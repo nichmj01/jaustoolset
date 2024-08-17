@@ -15,11 +15,11 @@ jobs:
       PLATFORM: x64
 
     steps:
-      # - name: Install Flex 
-      #   run: choco install winflexbison3 -y
+      - name: Install Flex 
+        run: choco install winflexbison3 -y
 
-      # - name: Install Qt6
-      #   run: choco install qt6-base-dev -y --params "'/Path'"
+      - name: Install Qt6
+        run: choco install qt6-base-dev -y --params "'/Path'"
 
       - name: Checkout Wireshark source
         uses: actions/checkout@v4
