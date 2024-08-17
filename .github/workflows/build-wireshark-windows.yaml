@@ -33,7 +33,7 @@ jobs:
       - name: Build and install wireshark
         working-directory: wireshark/build
         run: |
-          cmake ..
+          cmake -T host=x64 -A x64 ..
           cmake --build .
           cmake --install . 
 
