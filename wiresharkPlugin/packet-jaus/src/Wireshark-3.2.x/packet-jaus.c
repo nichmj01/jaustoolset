@@ -206,7 +206,7 @@ static gint ett_array = -1;
 #define tvb_length tvb_captured_length
 #define tvb_length_remaining tvb_captured_length_remaining
 #define ep_tvb_memdup(x,y,z) tvb_memdup(NULL,x,y,z)
-#define proto_tree_add_text(a,b,c,d,e...) proto_tree_add_none_format(a,0,b,c,d,e)
+// #define proto_tree_add_text(a,b,c,d,e...) proto_tree_add_none_format(a,0,b,c,d,e)
 #define check_col(x, y) TRUE
 #define plurality(x, yes, no) (bytes == 1 ? yes : no)
 #define tvb_get_ephemeral_string(x,y,z) tvb_get_string_enc(NULL, x, y, z,  ENC_UTF_8)
@@ -514,7 +514,7 @@ int dissect_sdp_header(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree)
 
 	if (tree) {
 		/* Header Sub tree */
-		jaus_sub_item = proto_tree_add_text(jaus_tree, tvb, offset, (!compression)? 14: 3, "Message Header");
+		jaus_sub_item = proto_tree_add_none_format(jaus_tree, 0, tvb, offset, (!compression)? 14: 3, "Message Header");
 		jaus_header_tree = proto_item_add_subtree(jaus_sub_item, ett_jaus_header);
 
 		/* add message type and hc to header tree */
@@ -535,7 +535,7 @@ int dissect_sdp_header(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree)
 			}
 			if (tree) {
 				/* add error data_size to header tree */
-				proto_tree_add_text(jaus_header_tree, tvb, offset, 2, "[ERROR Data Size is below the minimum value of 14]");
+				proto_tree_add_none_format(jaus_header_tree, 0, tvb, offset, 2, "[ERROR Data Size is below the minimum value of 14]");
 			}
 			return offset;
 		}
@@ -547,7 +547,7 @@ int dissect_sdp_header(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree)
 			}
 			if (tree) {
 				/* add error data_size to header tree */
-				proto_tree_add_text(jaus_header_tree, tvb, offset, 2, "[ERROR Data Size (%d) does not match size of packet (%d)]", data_size, (tvb_length(tvb)-1) );
+				proto_tree_add_none_format(jaus_header_tree, 0, tvb, offset, 2, "[ERROR Data Size (%d) does not match size of packet (%d)]", data_size, (tvb_length(tvb)-1) );
 			}
 			return offset;
 		}
@@ -608,7 +608,7 @@ int dissect_sdp_header(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree)
 		if (tvb_length_remaining(tvb, offset) > 2) {
 			bytes = tvb_length_remaining(tvb, offset) - 2;
 			if (tree) {
-				jaus_sub_item = proto_tree_add_text(jaus_tree, tvb, offset, bytes, "Payload (%d byte%s)", bytes, plurality(bytes, "", "s"));
+				jaus_sub_item = proto_tree_add_none_format(jaus_tree, 0, tvb, offset, bytes, "Payload (%d byte%s)", bytes, plurality(bytes, "", "s"));
 				jaus_payload_tree = proto_item_add_subtree(jaus_sub_item, ett_jaus_data);
 			}
 		}
@@ -758,10 +758,10 @@ int dissect_RA3_header(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree)
 
 		/* Legacy RA3 Header */
 		/* Header Sub tree */
-		jaus_sub_item = proto_tree_add_text(jaus_tree, tvb, offset, 16, "Message Header, Cmd: 0x%04X", command);
+		jaus_sub_item = proto_tree_add_none_format(jaus_tree, 0, tvb, offset, 16, "Message Header, Cmd: 0x%04X", command);
 		jaus_header_tree = proto_item_add_subtree(jaus_sub_item, ett_jaus_header);
 		/* Message Properties sub tree of Header */
-		jaus_sub_item = proto_tree_add_text(jaus_header_tree, tvb, offset, 2, "Message Properties " );
+		jaus_sub_item = proto_tree_add_none_format(jaus_header_tree, 0, tvb, offset, 2, "Message Properties " );
 		jaus_properties_tree = proto_item_add_subtree(jaus_sub_item, ett_jaus_message_properties);
 		/* submit the priority parameter to Message Properties.  */
 		proto_tree_add_item(jaus_properties_tree, hf_jaus_priority, tvb, offset, 1, LITTLE_ENDIAN);
@@ -833,7 +833,7 @@ int dissect_RA3_header(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree)
 		/* show the rest of the Data in the message */
 		bytes = tvb_length_remaining(tvb, offset);
 		if (bytes > 0) {
-			jaus_sub_item = proto_tree_add_text(jaus_tree, tvb, offset, bytes, "Data (%d byte%s)", bytes, plurality(bytes, "", "s"));
+			jaus_sub_item = proto_tree_add_none_format(jaus_tree, 0, tvb, offset, bytes, "Data (%d byte%s)", bytes, plurality(bytes, "", "s"));
 			jaus_data_tree = proto_item_add_subtree(jaus_sub_item, ett_jaus_data);
 
 			if (bytes == (dataC & 0xfff)) {
@@ -863,9 +863,9 @@ int dissect_RA3_header(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree)
 void print_error(tvbuff_t *tvb, proto_tree *tree, int error)
 {
 	if (error == -1) {
-		proto_tree_add_text(tree, tvb, data_offset, -1, "[ERROR: Unkown data_type, check xml]");
+		proto_tree_add_none_format(tree, 0, tvb, data_offset, -1, "[ERROR: Unkown data_type, check xml]");
 	} else if (error == -2) {
-		proto_tree_add_text(tree, tvb, data_offset, -1, "[ERROR: Malformed packet, not enough data]");
+		proto_tree_add_none_format(tree, 0, tvb, data_offset, -1, "[ERROR: Malformed packet, not enough data]");
 	}
 }
 
@@ -880,7 +880,7 @@ int dissect_array(tvbuff_t *tvb, proto_tree *tree, array_t *a_ptr)
 	int error;
 
 	/* print bit_field value to bit_field tree of the tree*/
-	sub_item = proto_tree_add_text(tree, tvb, data_offset, 1, "[ARRAY] %s (%s)",
+	sub_item = proto_tree_add_none_format(tree, 0, tvb, data_offset, 1, "[ARRAY] %s (%s)",
 		a_ptr->name, (a_ptr->optional) ? "optional" : "req");
 	sub_tree = proto_item_add_subtree(sub_item, ett_array);
 
@@ -1019,7 +1019,7 @@ int dissect_variable_field(tvbuff_t *tvb, proto_tree *tree, variable_field_t *vf
 		taue_ptr = taue_ptr->next;
 	}
 
-	sub_item = proto_tree_add_text(tree, tvb, offset, total_size, "[VF] %s (%s)",
+	sub_item = proto_tree_add_none_format(tree, 0, tvb, offset, total_size, "[VF] %s (%s)",
 		vf_ptr->name, (vf_ptr->optional) ? "optional" : "req");
 	sub_tree = proto_item_add_subtree(sub_item, ett_jaus_data);
 
@@ -1191,7 +1191,7 @@ int dissect_fixed_length_string(tvbuff_t *tvb, proto_tree *tree, fixed_length_st
 
 	string = tvb_get_ephemeral_string(tvb, data_offset, size);
 
-	proto_tree_add_text(tree, tvb, data_offset, size, "[FLS] %s(%d): %s",
+	proto_tree_add_none_format(tree, 0, tvb, data_offset, size, "[FLS] %s(%d): %s",
 			fls_ptr->name, size, string);
 
 	data_offset += size;
@@ -1223,7 +1223,7 @@ int dissect_variable_length_string(tvbuff_t *tvb, proto_tree *tree, variable_len
 
 	string = tvb_get_ephemeral_string(tvb, offset , (gint)string_length);
 
-	proto_tree_add_text(tree, tvb, offset, ((int)string_length + size), "[VLS] %s(%d): %s",
+	proto_tree_add_none_format(tree, 0, tvb, offset, ((int)string_length + size), "[VLS] %s(%d): %s",
 			vls_ptr->name, string_length, string);
 
 	data_offset = (offset + (int)string_length);
@@ -1402,7 +1402,7 @@ int dissect_message_field(tvbuff_t *tvb, proto_tree *tree, field_t *f_ptr, int _
 				op_count++;
 			break;
 		default:
-			proto_tree_add_text(tree, tvb, data_offset, -1, "No supported printout for field_type");
+			proto_tree_add_none_format(tree, 0, tvb, data_offset, -1, "No supported printout for field_type");
 	}
 	return(op_count);
 }
@@ -1432,7 +1432,7 @@ int dissect_message_comp(tvbuff_t *tvb, proto_tree *tree, field_t *f_ptr, int _c
 			r_ptr = (record_t *)f_ptr->field;
 			if ((!r_ptr->optional) || ((presence_vector >> c_op_count) & 0x01)) {
 				/* record subtree of the tree*/
-				sub_item = proto_tree_add_text(tree, tvb, data_offset, 1, "[RECORD]: %s (%s)", r_ptr->name,
+				sub_item = proto_tree_add_none_format(tree, 0, tvb, data_offset, 1, "[RECORD]: %s (%s)", r_ptr->name,
 					(r_ptr->optional) ? "optional" : "req");
 				sub_tree = proto_item_add_subtree(sub_item, ett_jaus_data);
 
@@ -1462,7 +1462,7 @@ int dissect_message_comp(tvbuff_t *tvb, proto_tree *tree, field_t *f_ptr, int _c
 			l_ptr = (list_t *)f_ptr->field;
 			if ((!l_ptr->optional) || ((presence_vector >> c_op_count) & 0x01)) {
 				/* list subtree of the tree*/
-				sub_item = proto_tree_add_text(tree, tvb, data_offset, 1, "[LIST]: %s (%s)", l_ptr->name,
+				sub_item = proto_tree_add_none_format(tree, 0, tvb, data_offset, 1, "[LIST]: %s (%s)", l_ptr->name,
 					(l_ptr->optional) ? "optional" : "req");
 				sub_tree = proto_item_add_subtree(sub_item, ett_jaus_data);
 
@@ -1486,7 +1486,7 @@ int dissect_message_comp(tvbuff_t *tvb, proto_tree *tree, field_t *f_ptr, int _c
 								data--;
 						}
 					} else {
-						proto_tree_add_text(sub_tree, tvb, data_offset, 1, "[ERROR]: count out of range (%d)", data);
+						proto_tree_add_none_format(sub_tree, 0, tvb, data_offset, 1, "[ERROR]: count out of range (%d)", data);
 						break;
 					}
 				} else {
@@ -1506,7 +1506,7 @@ int dissect_message_comp(tvbuff_t *tvb, proto_tree *tree, field_t *f_ptr, int _c
 			v_ptr = (variant_t *)f_ptr->field;
 			if ((!v_ptr->optional) || ((presence_vector >> c_op_count) & 0x01)) {
 				/* variant subtree of the tree*/
-				sub_item = proto_tree_add_text(tree, tvb, data_offset, 1, "[VARIANT]: %s (%s)", v_ptr->name,
+				sub_item = proto_tree_add_none_format(tree, 0, tvb, data_offset, 1, "[VARIANT]: %s (%s)", v_ptr->name,
 					(v_ptr->optional) ? "optional" : "req");
 				sub_tree = proto_item_add_subtree(sub_item, ett_jaus_data);
 
@@ -1536,7 +1536,7 @@ int dissect_message_comp(tvbuff_t *tvb, proto_tree *tree, field_t *f_ptr, int _c
 			s_ptr = (sequence_t *)f_ptr->field;
 			if ((!s_ptr->optional) || ((presence_vector >> c_op_count) & 0x01)) {
 				/* sequence subtree of the tree*/
-				sub_item = proto_tree_add_text(tree, tvb, data_offset, 1, "[SEQUENCE]: %s (%s)", s_ptr->name,
+				sub_item = proto_tree_add_none_format(tree, 0, tvb, data_offset, 1, "[SEQUENCE]: %s (%s)", s_ptr->name,
 					(s_ptr->optional) ? "optional" : "req");
 				sub_tree = proto_item_add_subtree(sub_item, ett_jaus_data);
 
@@ -1564,7 +1564,7 @@ int dissect_message_comp(tvbuff_t *tvb, proto_tree *tree, field_t *f_ptr, int _c
 				c_op_count++;
 			break;
 		default:
-			proto_tree_add_text(tree, tvb, data_offset, -1, "No supported printout for Composite field_type");
+			proto_tree_add_none_format(tree, 0, tvb, data_offset, -1, "No supported printout for Composite field_type");
 	}
 	return(c_op_count);
 }
