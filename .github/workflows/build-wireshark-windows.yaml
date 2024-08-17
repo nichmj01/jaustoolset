@@ -13,7 +13,7 @@ jobs:
     runs-on: windows-latest
     env:
       PLATFORM: x64
-    
+
     steps:
       - name: Install Flex 
         run: choco install winflexbison3 -y
@@ -35,6 +35,7 @@ jobs:
       - name: Build and install wireshark
         working-directory: wireshark/build
         run: |
+          cmake ..
           cmake --build .
           cmake --install . 
 
