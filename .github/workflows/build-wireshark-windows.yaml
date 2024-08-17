@@ -28,9 +28,9 @@ jobs:
       #     ref: v3.6.24
       #     path: wireshark
  
-      - name: Make build directory
-        working-directory: wireshark
-        run: mkdir build
+      # - name: Make build directory
+      #   working-directory: wireshark
+      #   run: mkdir build
 
       - name: Set WIRESHARK_BASE_DIR
         run: $env:WIRESHARK_BASE_DIR = $env:GITHUB_WORKSPACE
