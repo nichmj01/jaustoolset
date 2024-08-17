@@ -13,6 +13,7 @@ jobs:
     runs-on: windows-latest
     env:
       PLATFORM: x64
+      WIRESHARK_BASE_DIR: $GITHUB_WORKSPACE
 
     steps:
       - name: Install Flex 
@@ -35,9 +36,9 @@ jobs:
       - name: Build and install wireshark
         working-directory: wireshark/build
         run: |
-          cmake ..
+          cmake -A x64 ..
           cmake --build .
-          cmake --install . 
+          cmake --install .
 
       # - name: Save built binaries to cache
       #   id: cache-bin
