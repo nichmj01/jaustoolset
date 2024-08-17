@@ -21,7 +21,7 @@ jobs:
           version: '6.5.2'
           dir: $GITHUB_WORKSPACE
         
-      - run: ls -al $GITHUB_WORKSPACE
+      - run: ls -al $env:GITHUB_WORKSPACE
 
       # - name: Install Flex 
       #   run: choco install winflexbison3 -y
