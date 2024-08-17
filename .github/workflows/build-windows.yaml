@@ -34,7 +34,7 @@ jobs:
       - name: Checkout plugin code
         uses: actions/checkout@v4
         with:
-          path: jaustoolset
+          path: wireshark/jaustoolset
 
       - name: Make build directory
         working-directory: wireshark
@@ -44,7 +44,7 @@ jobs:
         working-directory: wireshark/build
         run: |
           $env:WIRESHARK_BASE_DIR = $env:GITHUB_WORKSPACE
-          cmake -G "Visual Studio 17 2022" -A x64 -DCMAKE_PREFIX_PATH="${env:GITHUB_WORKSPACE}/Qt/5.15.2/msvc2019_64" -DCUSTOM_PLUGIN_SRC_DIR="${env:GITHUB_WORKSPACE}/jaustoolset/wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x" ..
+          cmake -G "Visual Studio 17 2022" -A x64 -DCMAKE_PREFIX_PATH="${env:GITHUB_WORKSPACE}/Qt/5.15.2/msvc2019_64" -DCUSTOM_PLUGIN_SRC_DIR="${env:GITHUB_WORKSPACE}/wireshark/jaustoolset/wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x" ..
 
       # - name: Save built binaries to cache
       #   id: cache-bin
