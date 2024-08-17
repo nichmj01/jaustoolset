@@ -39,7 +39,7 @@ jobs:
 
       - name: Download libxml2
         run: |
-          curl --url http://xmlsoft.org/sources/win32/64bit/libxml2-2.9.3-win32-x86_64.7z --output libxml2-2.9.3-win32-x86_64.7z
+          curl -LO http://xmlsoft.org/sources/win32/64bit/libxml2-2.9.3-win32-x86_64.7z
 
       - name: Unzip libxml2
         run: |
@@ -47,13 +47,12 @@ jobs:
 
       - name: Download glib2
         run: |
-          curl --url https://download.gnome.org/binaries/win32/glib/2.8/glib-dev-2.8.6.zip --output glib-dev-2.8.6.zip
+          curl -LO https://download.gnome.org/binaries/win32/glib/2.8/glib-dev-2.8.6.zip
 
       - name: Unzip glib2
         run: |
           7z x glib-dev-2.8.6.zip -oglib2
   
-
       - name: Create build folder
         working-directory: jaustoolset/wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x
         shell: bash
