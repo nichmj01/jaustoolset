@@ -22,28 +22,30 @@ jobs:
           dir: ${{ github.workspace }}
           modules: qt5compat
         
-      - run: ls -r $env:GITHUB_WORKSPACE
+      - run: |
+          $env:WIRESHARK_QT6_PREFIX_PATH = "${env:GITHUB_WORKSPACE}\Qt\6.5.2\msvc2019_64"    
+          ls -r $env:WIRESHARK_QT6_PREFIX_PATH
 
-      - name: Install Flex 
-        run: choco install winflexbison3 -y
+      # - name: Install Flex 
+      #   run: choco install winflexbison3 -y
 
-      - name: Checkout Wireshark source
-        uses: actions/checkout@v4
-        with:
-          repository: wireshark/wireshark
-          ref: v3.6.24
-          path: wireshark
+      # - name: Checkout Wireshark source
+      #   uses: actions/checkout@v4
+      #   with:
+      #     repository: wireshark/wireshark
+      #     ref: v3.6.24
+      #     path: wireshark
  
-      - name: Make build directory
-        working-directory: wireshark
-        run: mkdir build
+      # - name: Make build directory
+      #   working-directory: wireshark
+      #   run: mkdir build
 
-      - name: Configure cmake
-        working-directory: wireshark/build
-        run: |
-          $env:WIRESHARK_BASE_DIR = $env:GITHUB_WORKSPACE
-          $env:WIRESHARK_QT6_PREFIX_PATH = "${env:GITHUB_WORKSPACE}\Qt\6.5.2\msvc2019_64"
-          cmake -G "Visual Studio 17 2022" -A x64 ..
+      # - name: Configure cmake
+      #   working-directory: wireshark/build
+      #   run: |
+      #     $env:WIRESHARK_BASE_DIR = $env:GITHUB_WORKSPACE
+      #     $env:WIRESHARK_QT6_PREFIX_PATH = "${env:GITHUB_WORKSPACE}\Qt\6.5.2\msvc2019_64"
+      #     cmake -G "Visual Studio 17 2022" -A x64 ..
 
       # - name: Build and install wireshark
       #   working-directory: wireshark/build
