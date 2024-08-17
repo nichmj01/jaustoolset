@@ -3,10 +3,10 @@ name: build-wireshark-windows
 on:
   workflow_call:
 
-  # push:
-  #   branches: [
-  #     test_build_wireshark_source
-  #   ]
+  push:
+    branches: [
+      test_build_wireshark_source
+    ]
 
 jobs:
   build_windows:
@@ -41,26 +41,87 @@ jobs:
           $env:WIRESHARK_BASE_DIR = $env:GITHUB_WORKSPACE
           cmake -G "Visual Studio 17 2022" -A x64 -DCMAKE_PREFIX_PATH="${env:GITHUB_WORKSPACE}\Qt\5.15.2\msvc2019_64" ..
 
-      - name: Build wireshark
-        working-directory: wireshark/build
-        run: cmake --build . --config Release
-
-      - name: install wireshark
-        working-directory: wireshark/build
-        run: |
-          mkdir $env:GITHUB_WORKSPACE\wireshark_artifacts
-          cmake --install . --prefix $env:GITHUB_WORKSPACE\wireshark_artifacts --config Release
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          path: $env:GITHUB_WORKSPACE/wireshark_artifacts/**
-
       - name: Save built binaries to cache
         id: cache-bin
-        uses: actions/cache/save@v4
+        uses: actions/cache@v4
         with:
           key: windows-cache
           path: |
             ./wireshark_artifacts/**
             ./wireshark/build/config.h
+
+      - name: Build wireshark
+        if: steps.cache-bin.outputs.cache-hit != 'true'
+        working-directory: wireshark/build
+        run: cmake --build . --config Release
+
+      - name: install wireshark
+        if: steps.cache-bin.outputs.cache-hit != 'true'      
+        working-directory: wireshark/build
+        run: |
+          mkdir $env:GITHUB_WORKSPACE\wireshark_artifacts
+          cmake --install . --prefix $env:GITHUB_WORKSPACE\wireshark_artifacts --config Release
+
+      # - name: Upload artifacts
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     path: $env:GITHUB_WORKSPACE/wireshark_artifacts/**
+
+      - name: Create library directory
+        run: mkdir -p $env:GITHUB_WORKSPACE/jaus_plugin_lib
+
+      - name: Checkout plugin code
+        uses: actions/checkout@v4
+        with:
+          path: jaustoolset
+
+      # - name: List wireshark_artifacts
+      #   shell: bash
+      #   run: ls $GITHUB_WORKSPACE
+
+      - name: Download libxml2
+        run: |
+          curl --url http://xmlsoft.org/sources/win32/64bit/libxml2-2.9.3-win32-x86_64.7z --output libxml2-2.9.3-win32-x86_64.7z
+
+      - name: Unzip libxml2
+        run: |
+          7z x libxml2-2.9.3-win32-x86_64.7z -olibxml2
+
+      - name: Create build folder
+        working-directory: jaustoolset/wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x
+        shell: bash
+        run: mkdir build
+
+      - name: Configure plugin
+        working-directory: jaustoolset/wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x/build
+        run: cmake -G "Visual Studio 17 2022" -A x64 -DCMAKE_PREFIX_PATH="${env:GITHUB_WORKSPACE}/wireshark_artifacts;${env:GITHUB_WORKSPACE}/libxml2" -DCMAKE_INSTALL_PREFIX="${env:GITHUB_WORKSPACE}/jaus_plugin_lib" ..
+      
+      # # - name: Upload CMakeCache
+      # #   uses: actions/upload-artifact@v3
+      # #   with:
+      # #     name: plugin_build_artifacts
+      # #     path: wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x/build
+
+      - name: Copy config.h
+        working-directory: jaustoolset/wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x/build
+        run: |
+          cp $env:GITHUB_WORKSPACE/wireshark/build/config.h .
+          cp $env:GITHUB_WORKSPACE/wireshark/build/config.h ..
+
+      - name: Build plugin
+        working-directory: jaustoolset/wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x/build
+        run: cmake --build .
+
+      - name: Install plugin
+        working-directory: jaustoolset/wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x/build
+        run: cp ./jaus.dll $env:GITHUB_WORKSPACE/jaus_plugin_lib
+
+      - name: List wireshark_artifacts
+        working-directory: jaustoolset/wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x/build
+        run: ls -R $env:GITHUB_WORKSPACE/jaus_plugin_lib
+
+      - name: Upload plugin as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          path: |
+            ./jaus_plugin_lib/**

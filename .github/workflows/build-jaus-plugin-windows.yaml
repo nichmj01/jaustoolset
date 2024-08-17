@@ -3,10 +3,10 @@ name: build-jaus-plugin-windows
 on:
   workflow_call:
 
-  push:
-    branches: [
-      test_build_wireshark_source
-    ]
+  # push:
+  #   branches: [
+  #     test_build_wireshark_source
+  #   ]
 
 jobs:
   build_plugin-windows:
@@ -27,10 +27,6 @@ jobs:
           
       - name: Create library directory
         run: mkdir -p $env:GITHUB_WORKSPACE/jaus_plugin_lib
-
-      # - name: List wireshark_artifacts
-      #   shell: bash
-      #   run: ls $GITHUB_WORKSPACE
 
       - name: Checkout plugin code
         uses: actions/checkout@v4
