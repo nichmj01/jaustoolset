@@ -1,0 +1,47 @@
+name: build-wireshark-windows
+
+on:
+  workflow_call:
+
+  push:
+    branches: [
+      test_build_wireshark_source
+    ]
+
+jobs:
+  build_windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: Install Flex 
+        run: choco install winflexbison3 -y
+
+      - name: Install Qt6
+        run: choco install qt6-base-dev -y --params "'/Path'"
+
+      - name: Checkout Wireshark source
+        uses: actions/checkout@v4
+        with:
+          repository: wireshark/wireshark
+          ref: v3.6.24
+          path: wireshark
+ 
+      - name: Make build directory
+        working-directory: wireshark
+        run: mkdir build
+
+      - name: Build and install wireshark
+        working-directory: wireshark/build
+        run: |
+          cmake ..
+          cmake --build .
+          cmake --install . 
+
+      # - name: Save built binaries to cache
+      #   id: cache-bin
+      #   uses: actions/cache/save@v4
+      #   with:
+      #     key: ubuntu-20_04-cache
+      #     path: |
+      #       ./wireshark_artifacts/**
+      #       ./wireshark/build/config.h

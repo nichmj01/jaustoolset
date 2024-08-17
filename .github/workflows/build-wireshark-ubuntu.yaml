@@ -13,17 +13,9 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-      - name: List $GITHUB_WORKSPACE
-        shell: bash
-        run: ls $GITHUB_WORKSPACE
-
       - name: Make wireshark_artifacts directory
         shell: bash  
         run: mkdir -p $GITHUB_WORKSPACE/wireshark_artifacts
-
-      - name: List $GITHUB_WORKSPACE
-        shell: bash
-        run: ls $GITHUB_WORKSPACE
 
       # - name: Cache built binaries
       #   id: cache-bin
@@ -40,11 +32,7 @@ jobs:
           repository: wireshark/wireshark
           ref: v3.2.18
           path: wireshark
-
-      - name: List $GITHUB_WORKSPACE
-        shell: bash
-        run: ls $GITHUB_WORKSPACE
-  
+ 
       - name: Install Wireshark dependencies
         working-directory: wireshark
         run: sudo tools/debian-setup.sh python3-pip ninja-build -y
@@ -60,10 +48,6 @@ jobs:
           cmake --build .
           cmake --install . 
 
-      - name: List wireshark_artifacts
-        shell: bash
-        run: ls $GITHUB_WORKSPACE
-
       - name: Save built binaries to cache
         id: cache-bin
         uses: actions/cache/save@v4
@@ -72,4 +56,3 @@ jobs:
           path: |
             ./wireshark_artifacts/**
             ./wireshark/build/config.h
-
