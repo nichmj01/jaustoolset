@@ -73,7 +73,6 @@ jobs:
 
       - name: Copy config.h
         working-directory: jaustoolset/wiresharkPlugin/packet-jaus/src/Wireshark-3.2.x/build
-        shell: bash
         run: |
           cp $env:GITHUB_WORKSPACE/wireshark/build/config.h .
           cp $env:GITHUB_WORKSPACE/wireshark/build/config.h ..
