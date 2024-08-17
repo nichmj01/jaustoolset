@@ -1,14 +1,14 @@
-project(JausDissector)
+# project(JausDissector)
 
-cmake_minimum_required(VERSION 3.16)
+# cmake_minimum_required(VERSION 3.16)
 
-find_package(Wireshark 3.2)
+# find_package(Wireshark 3.2)
 find_package(LibXml2)
 
-INCLUDE(UseMakePluginReg.cmake)
+# INCLUDE(UseMakePluginReg.cmake)
 
-find_package(PkgConfig REQUIRED)
-pkg_search_module(GLIB2 REQUIRED glib-2.0)
+# find_package(PkgConfig REQUIRED)
+# pkg_search_module(GLIB2 REQUIRED glib-2.0)
 include_directories (${GLIB2_INCLUDE_DIRS} ${Wireshark_INCLUDE_DIR} ${LIBXML2_INCLUDE_DIR})
 
 set(LINK_MODE_LIB SHARED)

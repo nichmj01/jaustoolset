@@ -3,10 +3,10 @@ name: build-jaus-plugin-windows
 on:
   workflow_call:
 
-  push:
-    branches: [
-      test_build_wireshark_source
-    ]
+  # push:
+  #   branches: [
+  #     test_build_wireshark_source
+  #   ]
 
 jobs:
   build_plugin-windows:
