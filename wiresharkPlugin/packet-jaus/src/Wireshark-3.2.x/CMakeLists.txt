@@ -9,7 +9,7 @@
 
 # find_package(PkgConfig REQUIRED)
 # pkg_search_module(GLIB2 REQUIRED glib-2.0)
-# include_directories (${GLIB2_INCLUDE_DIRS} ${Wireshark_INCLUDE_DIR} ${LIBXML2_INCLUDE_DIR})
+include_directories (${GLIB2_INCLUDE_DIRS} ${Wireshark_INCLUDE_DIR} ${LIBXML2_INCLUDE_DIR})
 
 set(LINK_MODE_LIB SHARED)
 set(LINK_MODE_MODULE MODULE)
