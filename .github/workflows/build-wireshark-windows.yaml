@@ -3,10 +3,10 @@ name: build-wireshark-windows
 on:
   workflow_call:
 
-  # push:
-  #   branches: [
-  #     test_build_wireshark_source
-  #   ]
+  push:
+    branches: [
+      test_build_wireshark_source
+    ]
 
 jobs:
   build_windows:
