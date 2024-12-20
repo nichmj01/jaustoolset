@@ -1,6 +1,6 @@
-# project(JausDissector)
+project(JausDissector)
 
-# cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.16)
 
 find_package(Wireshark)
 find_package(LibXml2)
